@@ -8,6 +8,7 @@ class Platformer extends Phaser.Scene {
         this.DRAG = 1000;    // DRAG < ACCELERATION = icy slide
         this.physics.world.gravity.y = 1000;
         this.JUMP_VELOCITY = -300;
+        this.WALL_JUMP = 200
         this.PARTICLE_VELOCITY = 50;
         this.SCALE = 2.0;
     }
@@ -64,6 +65,7 @@ class Platformer extends Phaser.Scene {
         my.sprite.player = this.physics.add.sprite(150, 200, "tilemap_sheet", 250);
         my.sprite.player.setCollideWorldBounds(true);
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+
 
         // Enable collision handling
         this.physics.add.collider(my.sprite.player, this.groundLayer);
@@ -153,6 +155,18 @@ class Platformer extends Phaser.Scene {
         }
         if(my.sprite.player.body.blocked.down && Phaser.Input.Keyboard.JustDown(cursors.up)) {
             my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
+        }
+        if(my.sprite.player.body.blocked.left && Phaser.Input.Keyboard.JustDown(cursors.up)){
+            my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
+            if (cursors.right.isDown){
+                my.sprite.player.body.setVelocityX(this.WALL_JUMP);
+            }
+        }
+        if(my.sprite.player.body.blocked.right && Phaser.Input.Keyboard.JustDown(cursors.up)){
+            my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
+            if (cursors.left.isDown){
+                my.sprite.player.body.setVelocityX(-this.WALL_JUMP);
+            }
         }
 
         if(Phaser.Input.Keyboard.JustDown(this.rKey)) {

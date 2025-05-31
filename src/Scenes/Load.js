@@ -48,7 +48,6 @@ class Load extends Phaser.Scene {
          this.scene.start("platformerScene");
     }
 
-    // Never get here since a new scene is started in create()
     update() {
     }
 }
