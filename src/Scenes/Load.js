@@ -6,10 +6,10 @@ class Load extends Phaser.Scene {
     preload() {
         this.load.setPath("./assets/");
 
-        //this.load.spritesheet("character", "1-bit-plat/Tilemap/monochrome_tilemap_transparent_packed.png", {
-            //frameWidth: 32,
-            //frameHeight: 32
-        //});
+        this.load.spritesheet("character", "1-bit-plat/Tilemap/monochrome_tilemap_transparent_packed.png", {
+            frameWidth: 16,
+            frameHeight: 16
+        });
 
         this.load.image("tilemap", "1-bit-plat/Tilemap/monochrome_tilemap_packed.png");
         this.load.tilemapTiledJSON("base_plat", "base_plat.tmj");
@@ -25,7 +25,7 @@ class Load extends Phaser.Scene {
     create() {
         this.anims.create({
             key: 'walk',
-            frames: [{key: 'tilemap_sheet', frame: 241},{key: 'tilemap_sheet', frame: 243}],
+            frames: [{key: 'character', frame: 241},{key: 'character', frame: 243}],
             frameRate: 15,
             repeat: -1
         });
@@ -33,7 +33,7 @@ class Load extends Phaser.Scene {
         this.anims.create({
             key: 'idle',
             frames: [
-                {key: 'tilemap_sheet', frame: 240}
+                {key: 'character', frame: 240}
             ],
             repeat: -1
         });
@@ -41,7 +41,7 @@ class Load extends Phaser.Scene {
         this.anims.create({
             key: 'jump',
             frames: [
-                {key: 'tilemap_sheet', frame: 242}
+                {key: 'character', frame: 242}
             ],
         });
 
