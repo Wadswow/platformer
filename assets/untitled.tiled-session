@@ -1,0 +1,33 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "#1-bit_platformer": {
+            "scaleInEditor": 1
+        },
+        "#monochrome_tilemap(resized)": {
+            "scaleInDock": 0.5
+        }
+    },
+    "last.imagePath": "C:/Users/nicho/OneDrive/Documents/CMPM120/Platformer/assets/1-bit-plat/Tilemap",
+    "map.width": 75,
+    "openFiles": [
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.embedInMap": true,
+    "tileset.tileSize": {
+        "height": 32,
+        "width": 32
+    }
+}
