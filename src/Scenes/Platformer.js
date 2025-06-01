@@ -11,6 +11,8 @@ class Platformer extends Phaser.Scene {
         this.WALL_JUMP = 200
         this.PARTICLE_VELOCITY = 50;
         this.SCALE = 2.0;
+        this.SCORE = 0;
+        this.GEM = 0;
     }
 
     preload(){
@@ -29,8 +31,11 @@ class Platformer extends Phaser.Scene {
         this.exitLayer = this.map.createLayer("Exit", this.tileset, 0, 0);
 
         this.groundLayer.setCollisionByProperty({
-            collides: true,
-            jump: true
+            collides: true
+        });
+
+        this.exitLayer.setCollisionByProperty({
+            exit: true
         });
 
         this.coins = this.map.createFromObjects("Coin", {
@@ -52,20 +57,32 @@ class Platformer extends Phaser.Scene {
         
         my.sprite.player = this.physics.add.sprite(125, 200, "character", 250);
         my.sprite.player.setCollideWorldBounds(true);
-        this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+        this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels+1);
 
         this.physics.add.collider(my.sprite.player, this.groundLayer);
 
+        this.physics.add.collider(my.sprite.player, this.exitLayer, () => {
+            this.registry.set('score', this.SCORE);
+            this.registry.set('gem', this.GEM);
+            this.scene.start('restartScene');
+        })
+
         this.physics.add.overlap(my.sprite.player, this.coinGroup, (obj1, obj2) => {
             obj2.destroy();
+            this.SCORE += 10;
+            this.addScoreText('Score: ' + this.SCORE, my.sprite.player.x, my.sprite.player.y);
         });
         this.physics.add.overlap(my.sprite.player, this.gemGroup, (obj1, obj2) => {
             obj2.destroy();
+            this.SCORE += 50;
+            this.GEM += 1;
+            this.addScoreText('Gem Count: ' + this.GEM + '/8', my.sprite.player.x, my.sprite.player.y);
+            this.time.delayedCall(1000, () => {
+                this.addScoreText('Score: ' + this.SCORE, my.sprite.player.x, my.sprite.player.y);
+            });
         });
 
         cursors = this.input.keyboard.createCursorKeys();
-
-        this.rKey = this.input.keyboard.addKey('R');
 
         this.input.keyboard.on('keydown-D', () => {
             this.physics.world.drawDebug = this.physics.world.drawDebug ? false : true
@@ -89,6 +106,25 @@ class Platformer extends Phaser.Scene {
         this.cameras.main.setDeadzone(50, 50);
         this.cameras.main.setZoom(this.SCALE);
 
+    }
+    addScoreText(text, x, y){
+        const Anitext = this.add.text(x, y, text, {
+            fontFamily: 'Arial',
+            fontSize: '10px',
+            color: '#FFFFFF',
+            stroke: '#000000',
+            strokeThickness: 2
+        }).setOrigin(0.5);
+        this.tweens.add({
+            targets: Anitext,
+            y: y - 15,
+            alpha: 0,
+            duration: 1000,
+            ease: 'Cubic.easeOut',
+            onComplete: () => {
+                Anitext.destroy();
+            }
+        })
     }
 
     update() {
@@ -134,10 +170,6 @@ class Platformer extends Phaser.Scene {
             if (cursors.left.isDown){
                 my.sprite.player.body.setVelocityX(-this.WALL_JUMP);
             }
-        }
-
-        if(Phaser.Input.Keyboard.JustDown(this.rKey)) {
-            this.scene.restart();
         }
     }
 }
