@@ -3146,6 +3146,11 @@
                          "name":"jump",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"kill",
+                         "type":"bool",
+                         "value":true
                         }]
                 }, 
                 {

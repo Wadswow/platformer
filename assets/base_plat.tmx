@@ -1109,6 +1109,7 @@
    <properties>
     <property name="collides" type="bool" value="false"/>
     <property name="jump" type="bool" value="false"/>
+    <property name="kill" type="bool" value="true"/>
    </properties>
    <animation>
     <frame tileid="183" duration="500"/>

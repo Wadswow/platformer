@@ -38,6 +38,10 @@ class Platformer extends Phaser.Scene {
             exit: true
         });
 
+        this.trapLayer.setCollisionByProperty({
+            kill: true
+        });
+
         this.coins = this.map.createFromObjects("Coin", {
             name: "coin",
             key: "tilemap_sheet",
@@ -57,7 +61,7 @@ class Platformer extends Phaser.Scene {
         
         my.sprite.player = this.physics.add.sprite(125, 200, "character", 250);
         my.sprite.player.setCollideWorldBounds(true);
-        this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels+1);
+        this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels+16);
 
         this.physics.add.collider(my.sprite.player, this.groundLayer);
 
@@ -65,7 +69,11 @@ class Platformer extends Phaser.Scene {
             this.registry.set('score', this.SCORE);
             this.registry.set('gem', this.GEM);
             this.scene.start('restartScene');
-        })
+        });
+
+        this.physics.add.collider(my.sprite.player, this.trapLayer, () => {
+            this.scene.restart();
+        });
 
         this.physics.add.overlap(my.sprite.player, this.coinGroup, (obj1, obj2) => {
             obj2.destroy();
@@ -77,7 +85,7 @@ class Platformer extends Phaser.Scene {
             this.SCORE += 50;
             this.GEM += 1;
             this.addScoreText('Gem Count: ' + this.GEM + '/8', my.sprite.player.x, my.sprite.player.y);
-            this.time.delayedCall(1000, () => {
+            this.time.delayedCall(300, () => {
                 this.addScoreText('Score: ' + this.SCORE, my.sprite.player.x, my.sprite.player.y);
             });
         });
@@ -170,6 +178,9 @@ class Platformer extends Phaser.Scene {
             if (cursors.left.isDown){
                 my.sprite.player.body.setVelocityX(-this.WALL_JUMP);
             }
+        }
+        if (my.sprite.player.y >= 320){
+            this.scene.restart();
         }
     }
 }
